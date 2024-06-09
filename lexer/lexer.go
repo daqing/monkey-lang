@@ -48,9 +48,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.MINUS, l.ch)
 	case '!':
 		if l.peekChar() == '=' {
-			ch := l.ch
 			l.readChar()
-			tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
+			tok = token.Token{Type: token.NOT_EQ, Literal: "=="}
 		} else {
 			tok = newToken(token.BANG, l.ch)
 		}
@@ -89,7 +88,7 @@ func (l *Lexer) NextToken() token.Token {
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
-			tok.Type = token.LookupIdent(tok.Literal)
+			tok.Type = token.LookupKeyword(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Type = token.INT
@@ -97,7 +96,6 @@ func (l *Lexer) NextToken() token.Token {
 			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
-
 		}
 	}
 
